@@ -14,18 +14,31 @@
         <h1 class="text-center">Gerenciamento de Cidades</h1>
     </div>
 
-    <form class="container mt-4">
+    <#if cidadeAtual??>
+        <form action="/alterar" method="POST" class="container mt-4">
+            <input type="hidden" name="_method" value="PATCH"/>
+            <input type="hidden" name="nomeAtual" value="${cidadeAtual.nome}"/>
+            <input type="hidden" name="ufAtual" value="${cidadeAtual.uf}"/>
+    <#else>
+        <form action="/criar" method="POST" class="container mt-4">
+    </#if>
+
         <div class="form-group">
             <label for="nome">Cidade:</label>
-            <input type="text" class="form-control" id="nome" placeholder="Nome da cidade">
+            <input value="${(cidadeAtual.nome)!}" name="nome" type="text" class="form-control" id="nome" placeholder="Nome da cidade">
         </div>
 
         <div class="form-group">
             <label for="estado">Estado:</label>
-            <input type="text" class="form-control" id="estado" placeholder="Sigla do estado">
+            <input value="${(cidadeAtual.uf)!}" name="uf" type="text" class="form-control" id="estado" placeholder="Sigla do estado">
         </div>
 
-        <button class="btn btn-primary">Adicionar</button>
+        <#if cidadeAtual??>
+            <button type="submit" class="btn btn-warning">Concluir Alteração</button>
+        <#else>
+            <button type="submit" class="btn btn-primary">Adicionar</button>
+        </#if>
+
     </form>
 
     <table class="table table-striped table-hover mt-3 container">
@@ -43,8 +56,8 @@
                     <td>${cidade.uf}</td>
                     <td>
                         <div class="d-flex justify-content-start">
-                            <button class="btn btn-sm btn-warning me-3">Editar</button>
-                            <button class="btn btn-sm btn-danger">Excluir</button>
+                            <a href="/preparaAlterar?nome=${cidade.nome}&uf=${cidade.uf}" class="btn btn-sm btn-warning me-3">Editar</a>
+                            <a href="/excluir?nome=${cidade.nome}&uf=${cidade.uf}" class="btn btn-sm btn-danger">Excluir</a>
                         </div>
                     </td>
                 </tr>
