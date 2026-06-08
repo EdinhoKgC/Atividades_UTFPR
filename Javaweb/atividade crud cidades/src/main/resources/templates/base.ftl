@@ -17,20 +17,20 @@
     <#if cidadeAtual??>
         <form action="/alterar" method="POST" class="container mt-4">
             <input type="hidden" name="_method" value="PATCH"/>
-            <input type="hidden" name="nomeAtual" value="${cidadeAtual.nome}"/>
-            <input type="hidden" name="ufAtual" value="${cidadeAtual.uf}"/>
+            <input required type="hidden" name="nomeAtual" value="${cidadeAtual.nome}"/>
+            <input required type="hidden" name="ufAtual" value="${cidadeAtual.uf}"/>
     <#else>
         <form action="/criar" method="POST" class="container mt-4">
     </#if>
 
         <div class="form-group">
             <label for="nome">Cidade:</label>
-            <input value="${(cidadeAtual.nome)!}" name="nome" type="text" class="form-control" id="nome" placeholder="Nome da cidade">
+            <input required value="${(cidadeAtual.nome)!}" name="nome" type="text" class="form-control" id="nome" placeholder="Nome da cidade">
         </div>
 
         <div class="form-group">
             <label for="estado">Estado:</label>
-            <input value="${(cidadeAtual.uf)!}" name="uf" type="text" class="form-control" id="estado" placeholder="Sigla do estado">
+            <input required maxlength="2" value="${(cidadeAtual.uf)!}" name="uf" type="text" class="form-control" id="estado" placeholder="Sigla do estado">
         </div>
 
         <#if cidadeAtual??>

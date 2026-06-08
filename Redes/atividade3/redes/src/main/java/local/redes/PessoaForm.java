@@ -80,7 +80,7 @@ public class PessoaForm extends JFrame {
 
             String resposta = cliente.enviarPessoa(pessoa);
 
-            txtRetorno.setText("Recebeu do servidor:\n" + resposta);
+            txtRetorno.setText(resposta);
 
         } catch (NumberFormatException ex) {
             txtRetorno.setText("Idade inválida. Digite apenas números.");
