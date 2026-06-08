@@ -5,12 +5,15 @@ import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.javaweb.atividade.models.Cidade;
+
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -29,8 +32,20 @@ public class CidadeController {
     }
 
     @PostMapping("/criar")
-    public String criar(Cidade cidade){
-        cidades.add(cidade);
+    public String criar(@Valid Cidade cidade, BindingResult validacao){
+        if (validacao.hasErrors()) {
+            validacao.getFieldErrors().forEach(error ->
+                                        System.out.println(
+                                            String.format("O atributo %s emitiu a seguinte mensagem de erro %s",
+                                            error.getField(),
+                                            error.getDefaultMessage()
+                                                )
+                                            )
+                                        );
+
+        } else {
+            cidades.add(cidade);
+        }
 
         return "redirect:/";
     }
@@ -73,7 +88,7 @@ public class CidadeController {
     public String alterar(
         @RequestParam String nomeAtual,
         @RequestParam String ufAtual,
-        Cidade cidade
+        @Valid Cidade cidade
     ) {
         cidades.removeIf(cidadeAtual -> 
                                 cidadeAtual.getNome().equals(nomeAtual) && 
