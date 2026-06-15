@@ -32,16 +32,19 @@ public class CidadeController {
     }
 
     @PostMapping("/criar")
-    public String criar(@Valid Cidade cidade, BindingResult validacao){
+    public String criar(@Valid Cidade cidade, BindingResult validacao, Model memoria){
         if (validacao.hasErrors()) {
             validacao.getFieldErrors().forEach(error ->
-                                        System.out.println(
-                                            String.format("O atributo %s emitiu a seguinte mensagem de erro %s",
-                                            error.getField(),
-                                            error.getDefaultMessage()
-                                                )
-                                            )
+                                        memoria.addAttribute(
+                                                error.getField(),
+                                                error.getDefaultMessage())
                                         );
+
+            memoria.addAttribute("nomeInformado", cidade.getNome());
+            memoria.addAttribute("ufInformado", cidade.getUf());
+            memoria.addAttribute("listarCidades", cidades);
+
+            return "base";
 
         } else {
             cidades.add(cidade);
@@ -88,8 +91,26 @@ public class CidadeController {
     public String alterar(
         @RequestParam String nomeAtual,
         @RequestParam String ufAtual,
-        @Valid Cidade cidade
+        @Valid Cidade cidade,
+        BindingResult validacao,
+        Model memoria
     ) {
+        if (validacao.hasErrors()) {
+            validacao.getFieldErrors().forEach(error ->
+                                        memoria.addAttribute(
+                                                error.getField(),
+                                                error.getDefaultMessage())
+                                        );
+
+            memoria.addAttribute("nomeInformado", cidade.getNome());
+            memoria.addAttribute("ufInformado", cidade.getUf());
+            memoria.addAttribute("cidadeAtual", cidade);
+            memoria.addAttribute("listarCidades", cidades);
+
+            return "base";
+
+        }
+            
         cidades.removeIf(cidadeAtual -> 
                                 cidadeAtual.getNome().equals(nomeAtual) && 
                                 cidadeAtual.getUf().equals(ufAtual));

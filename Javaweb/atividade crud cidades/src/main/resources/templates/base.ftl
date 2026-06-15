@@ -15,28 +15,60 @@
     </div>
 
     <#if cidadeAtual??>
-        <form action="/alterar" method="POST" class="container mt-4">
-            <input type="hidden" name="_method" value="PATCH"/>
-            <input type="hidden" name="nomeAtual" value="${cidadeAtual.nome}"/>
-            <input type="hidden" name="ufAtual" value="${cidadeAtual.uf}"/>
+        <form action="/alterar" 
+                method="POST" 
+                class="container mt-4 needs-validation" 
+                novalidate>
+            <input type="hidden" 
+                    name="_method" 
+                    value="PATCH"/>
+            <input type="hidden" 
+                    name="nomeAtual" 
+                    value="${cidadeAtual.nome}"/>
+            <input type="hidden" 
+                    name="ufAtual" 
+                    value="${cidadeAtual.uf}"/>
     <#else>
-        <form action="/criar" method="POST" class="container mt-4">
+        <form action="/criar" 
+                method="POST" 
+                class="container mt-4 needs-validation" 
+                novalidate>
     </#if>
 
         <div class="form-group">
             <label for="nome">Cidade:</label>
-            <input value="${(cidadeAtual.nome)!}" name="nome" type="text" class="form-control" id="nome" placeholder="Nome da cidade">
+            <input value="${(cidadeAtual.nome)!}${(nomeInformado)!}" 
+                    name="nome" 
+                    type="text" 
+                    class="form-control ${(nome??)?then('is-invalid', '')}" 
+                    id="nome" 
+                    placeholder="Nome da cidade">
+            <div class="invalid-feedback">
+                ${nome!}
+            </div>
         </div>
 
         <div class="form-group">
             <label for="estado">Estado:</label>
-            <input value="${(cidadeAtual.uf)!}" name="uf" type="text" class="form-control" id="estado" placeholder="Sigla do estado">
+            <input value="${(cidadeAtual.uf)!}${(ufInformado)!}" 
+                    name="uf" 
+                    type="text" 
+                    class="form-control ${(uf??)?then('is-invalid', '')}" 
+                    id="estado" 
+                    placeholder="Sigla do estado">
+            <div class="invalid-feedback">
+                ${uf!}
+            </div>
         </div>
 
         <#if cidadeAtual??>
-            <button type="submit" class="btn btn-warning">Concluir Alteração</button>
+            <button type="submit" 
+                    class="btn btn-warning">Concluir Alteração
+            </button>
         <#else>
-            <button type="submit" class="btn btn-primary">Adicionar</button>
+            <button type="submit" 
+                    class="btn btn-primary">Adicionar
+            </button>
         </#if>
 
     </form>
@@ -56,8 +88,10 @@
                     <td>${cidade.uf}</td>
                     <td>
                         <div class="d-flex justify-content-start">
-                            <a href="/preparaAlterar?nome=${cidade.nome}&uf=${cidade.uf}" class="btn btn-sm btn-warning me-3">Editar</a>
-                            <a href="/excluir?nome=${cidade.nome}&uf=${cidade.uf}" class="btn btn-sm btn-danger">Excluir</a>
+                            <a href="/preparaAlterar?nome=${cidade.nome}&uf=${cidade.uf}" 
+                                class="btn btn-sm btn-warning me-3">Editar</a>
+                            <a href="/excluir?nome=${cidade.nome}&uf=${cidade.uf}" 
+                                class="btn btn-sm btn-danger">Excluir</a>
                         </div>
                     </td>
                 </tr>
